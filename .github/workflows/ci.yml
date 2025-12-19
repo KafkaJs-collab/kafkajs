@@ -103,7 +103,7 @@ jobs:
       
       - name: Pull docker images
         if: steps.skip_check.outputs.SKIP_TESTS != 'true'
-        run: docker compose -f ${COMPOSE_FILE} pull
+        run: docker compose -f ${{ env.COMPOSE_FILE }} pull
       
       - name: Run tests
         if: steps.skip_check.outputs.SKIP_TESTS != 'true'
@@ -150,7 +150,7 @@ jobs:
       
       - name: Pull docker images
         if: steps.skip_check.outputs.SKIP_TESTS != 'true'
-        run: docker compose -f ${COMPOSE_FILE} pull
+        run: docker compose -f ${{ env.COMPOSE_FILE }} pull
       
       - name: Run tests
         if: steps.skip_check.outputs.SKIP_TESTS != 'true'
@@ -197,7 +197,7 @@ jobs:
       
       - name: Pull docker images
         if: steps.skip_check.outputs.SKIP_TESTS != 'true'
-        run: docker compose -f ${COMPOSE_FILE} pull
+        run: docker compose -f ${{ env.COMPOSE_FILE }} pull
       
       - name: Run tests
         if: steps.skip_check.outputs.SKIP_TESTS != 'true'
@@ -245,7 +245,7 @@ jobs:
       
       - name: Pull docker images
         if: steps.skip_check.outputs.SKIP_TESTS != 'true'
-        run: docker compose -f ${COMPOSE_FILE} pull
+        run: docker compose -f ${{ env.COMPOSE_FILE }} pull
       
       - name: Run tests
         if: steps.skip_check.outputs.SKIP_TESTS != 'true'
@@ -292,7 +292,7 @@ jobs:
       
       - name: Pull docker images
         if: steps.skip_check.outputs.SKIP_TESTS != 'true'
-        run: docker compose -f ${COMPOSE_FILE} pull
+        run: docker compose -f ${{ env.COMPOSE_FILE }} pull
       
       - name: Run tests
         if: steps.skip_check.outputs.SKIP_TESTS != 'true'
@@ -341,7 +341,7 @@ jobs:
       
       - name: Pull docker images
         if: steps.skip_check.outputs.SKIP_TESTS != 'true'
-        run: docker compose -f ${COMPOSE_FILE} pull
+        run: docker compose -f ${{ env.COMPOSE_FILE }} pull
       
       - name: Run tests
         if: steps.skip_check.outputs.SKIP_TESTS != 'true'
