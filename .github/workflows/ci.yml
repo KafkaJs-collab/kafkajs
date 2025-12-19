@@ -78,7 +78,12 @@ jobs:
       test_retries: 2
     steps:
       - uses: actions/checkout@v4
-      
+
+      - name: Set up Docker Compose
+        uses: docker/setup-compose-action@v1
+        with:
+          version: latest
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -120,7 +125,12 @@ jobs:
       test_retries: 2
     steps:
       - uses: actions/checkout@v4
-      
+
+      - name: Set up Docker Compose
+        uses: docker/setup-compose-action@v1
+        with:
+          version: latest
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -162,7 +172,12 @@ jobs:
       test_retries: 2
     steps:
       - uses: actions/checkout@v4
-      
+
+      - name: Set up Docker Compose
+        uses: docker/setup-compose-action@v1
+        with:
+          version: latest
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -205,7 +220,12 @@ jobs:
       NODE_OPTIONS: --max-old-space-size=6655
     steps:
       - uses: actions/checkout@v4
-      
+
+      - name: Set up Docker Compose
+        uses: docker/setup-compose-action@v1
+        with:
+          version: latest
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -247,7 +267,12 @@ jobs:
       test_retries: 2
     steps:
       - uses: actions/checkout@v4
-      
+
+      - name: Set up Docker Compose
+        uses: docker/setup-compose-action@v1
+        with:
+          version: latest
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -290,7 +315,13 @@ jobs:
       COMPOSE_FILE: docker-compose.2_4_oauthbearer.yml
     steps:
       - uses: actions/checkout@v4
-      
+
+      - name: Set up Docker Compose
+        uses: docker/setup-compose-action@v1
+        with:
+          version: latest
+
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
