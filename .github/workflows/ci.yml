@@ -13,7 +13,7 @@ on:
 
 env:
   KAFKA_VERSION: '2.4'
-  COMPOSE_FILE: docker-compose.2_4.yml
+  COMPOSE_FILE: docker compose.2_4.yml
 
 jobs:
   lint:
@@ -103,7 +103,7 @@ jobs:
       
       - name: Pull docker images
         if: steps.skip_check.outputs.SKIP_TESTS != 'true'
-        run: docker-compose -f ${COMPOSE_FILE} pull
+        run: docker compose -f ${COMPOSE_FILE} pull
       
       - name: Run tests
         if: steps.skip_check.outputs.SKIP_TESTS != 'true'
@@ -150,7 +150,7 @@ jobs:
       
       - name: Pull docker images
         if: steps.skip_check.outputs.SKIP_TESTS != 'true'
-        run: docker-compose -f ${COMPOSE_FILE} pull
+        run: docker compose -f ${COMPOSE_FILE} pull
       
       - name: Run tests
         if: steps.skip_check.outputs.SKIP_TESTS != 'true'
@@ -197,7 +197,7 @@ jobs:
       
       - name: Pull docker images
         if: steps.skip_check.outputs.SKIP_TESTS != 'true'
-        run: docker-compose -f ${COMPOSE_FILE} pull
+        run: docker compose -f ${COMPOSE_FILE} pull
       
       - name: Run tests
         if: steps.skip_check.outputs.SKIP_TESTS != 'true'
@@ -245,7 +245,7 @@ jobs:
       
       - name: Pull docker images
         if: steps.skip_check.outputs.SKIP_TESTS != 'true'
-        run: docker-compose -f ${COMPOSE_FILE} pull
+        run: docker compose -f ${COMPOSE_FILE} pull
       
       - name: Run tests
         if: steps.skip_check.outputs.SKIP_TESTS != 'true'
@@ -292,7 +292,7 @@ jobs:
       
       - name: Pull docker images
         if: steps.skip_check.outputs.SKIP_TESTS != 'true'
-        run: docker-compose -f ${COMPOSE_FILE} pull
+        run: docker compose -f ${COMPOSE_FILE} pull
       
       - name: Run tests
         if: steps.skip_check.outputs.SKIP_TESTS != 'true'
@@ -312,7 +312,7 @@ jobs:
     needs: lint
     env:
       test_retries: 2
-      COMPOSE_FILE: docker-compose.2_4_oauthbearer.yml
+      COMPOSE_FILE: docker compose.2_4_oauthbearer.yml
     steps:
       - uses: actions/checkout@v4
 
@@ -341,7 +341,7 @@ jobs:
       
       - name: Pull docker images
         if: steps.skip_check.outputs.SKIP_TESTS != 'true'
-        run: docker-compose -f ${COMPOSE_FILE} pull
+        run: docker compose -f ${COMPOSE_FILE} pull
       
       - name: Run tests
         if: steps.skip_check.outputs.SKIP_TESTS != 'true'
