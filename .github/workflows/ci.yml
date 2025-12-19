@@ -13,7 +13,7 @@ on:
 
 env:
   KAFKA_VERSION: '2.4'
-  COMPOSE_FILE: docker compose.2_4.yml
+  COMPOSE_FILE: docker-compose.2_4.yml
 
 jobs:
   lint:
