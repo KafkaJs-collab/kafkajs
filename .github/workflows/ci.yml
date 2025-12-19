@@ -13,7 +13,12 @@ on:
 
 env:
   KAFKA_VERSION: '2.4'
-  COMPOSE_FILE: docker-compose.2_4.yml
+  oauth: docker-compose.2_4.yml
+
+permissions:
+  contents: read
+  actions: read
+  checks: write
 
 jobs:
   lint:
@@ -312,7 +317,7 @@ jobs:
     needs: lint
     env:
       test_retries: 2
-      COMPOSE_FILE: docker compose.2_4_oauthbearer.yml
+      COMPOSE_FILE: docker-compose.2_4_oauthbearer.yml
     steps:
       - uses: actions/checkout@v4
 
