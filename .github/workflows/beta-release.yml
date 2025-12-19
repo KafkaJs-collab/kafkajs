@@ -1,0 +1,65 @@
+name: Beta Release
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  beta_release_check:
+    name: 'Beta release check'
+    runs-on: ubuntu-latest
+    outputs:
+      skip_pre_release: ${{ steps.beta_check.outputs.SKIP_PRE_RELEASE }}
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '14.x'
+      
+      - name: Install dependencies
+        run: yarn install
+      
+      - name: Check beta eligibility
+        id: beta_check
+        run: ./scripts/pipeline/checkBetaEligibility.js
+
+  npm_beta_release:
+    name: 'NPM beta release'
+    runs-on: ubuntu-latest
+    needs: beta_release_check
+    if: needs.beta_release_check.outputs.skip_pre_release != 'true'
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '14.x'
+          registry-url: 'https://registry.npmjs.org'
+      
+      - name: Install dependencies
+        run: yarn install
+      
+      - name: Generate beta release version
+        run: ./scripts/pipeline/generateBetaReleaseVersion.js
+      
+      - name: Update package.json for beta release
+        run: ./scripts/pipeline/updatePackageJsonForPreRelease.js
+      
+      - name: Publish to NPM (beta tag)
+        run: npm publish --tag beta
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      
+      - name: Comment on PR
+        run: TOKEN=${GH_TOKEN} ./scripts/pipeline/commentBackOnPR.js
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Trigger canary app pipeline
+        run: ./scripts/pipeline/triggerCanaryAppPipeline.sh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

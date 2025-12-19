@@ -1,0 +1,69 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+      - '!*.beta.*'
+
+jobs:
+  npm_release:
+    name: 'NPM release'
+    runs-on: ubuntu-latest
+    needs: []
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '14.x'
+          registry-url: 'https://registry.npmjs.org'
+      
+      - name: Publish to NPM
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      
+      - name: Update GitHub Release
+        run: TOKEN=${GH_TOKEN} TAG=${GITHUB_REF} ./scripts/pipeline/updateGithubRelease.js
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  version_website:
+    name: 'Version website'
+    runs-on: ubuntu-latest
+    needs: npm_release
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '14.x'
+      
+      - name: Configure git
+        run: |
+          git config user.name "Website Build Bot"
+          git config user.email "<>"
+      
+      - name: Generate version
+        run: |
+          cd website
+          yarn install
+          DOC_VERSION=$(echo "$VERSION" | sed -e "s/^refs\/tags\/v//")
+          yarn run version "$DOC_VERSION"
+        env:
+          VERSION: ${{ github.ref }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Commit changes
+        run: |
+          git add .
+          DOC_VERSION=$(echo "$VERSION" | sed -e "s/^refs\/tags\/v//")
+          git commit -m "Versioned docs for $DOC_VERSION"
+          git push origin HEAD:master
+        env:
+          VERSION: ${{ github.ref }}
