@@ -20,4 +20,4 @@ echo "CONSUMER_BYTES: ${CONSUMER_BYTES}"
 
 docker exec \
  $(find_container_id) \
- bash -c "kafka-configs --bootstrap-server kafka1:9092 --alter --add-config 'producer_byte_rate=${PRODUCER_BYTES},consumer_byte_rate=${CONSUMER_BYTES}' --entity-type clients --entity-name ${CLIENT_ID}"
+ bash -c "kafka-configs --bootstrap-server kafka1:29092 --alter --add-config 'producer_byte_rate=${PRODUCER_BYTES},consumer_byte_rate=${CONSUMER_BYTES}' --entity-type clients --entity-name ${CLIENT_ID}"

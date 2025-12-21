@@ -77,4 +77,4 @@ echo "password_512: '${password_512}'"
 
 docker exec \
  $(find_container_id) \
- bash -c "kafka-configs --bootstrap-server kafka1:9092 --alter --add-config 'SCRAM-SHA-256=[iterations=8192,password=${password_256}],SCRAM-SHA-512=[password=${password_512}]' --entity-type users --entity-name ${kafka_username}"
+ bash -c "kafka-configs --bootstrap-server kafka1:29092 --alter --add-config 'SCRAM-SHA-256=[iterations=8192,password=${password_256}],SCRAM-SHA-512=[password=${password_512}]' --entity-type users --entity-name ${kafka_username}"
