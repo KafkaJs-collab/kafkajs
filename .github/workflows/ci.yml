@@ -24,6 +24,7 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         node-version: [16.x, 18.x]
     steps:
@@ -54,6 +55,7 @@ jobs:
     name: Typescript types
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         node-version: [16.x, 18.x]
     steps:
@@ -85,6 +87,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: lint
     strategy:
+      fail-fast: false
       matrix:
         node-version: [16.x, 18.x]
         kafka-version: ['2_4', '3_8']
@@ -137,6 +140,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: lint
     strategy:
+      fail-fast: false
       matrix:
         node-version: [16.x, 18.x]
         kafka-version: ['2_4', '3_8']
@@ -189,6 +193,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: lint
     strategy:
+      fail-fast: false
       matrix:
         node-version: [16.x, 18.x]
         kafka-version: ['2_4', '3_8']
@@ -241,6 +246,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: lint
     strategy:
+      fail-fast: false
       matrix:
         node-version: [16.x, 18.x]
         kafka-version: ['2_4', '3_8']
@@ -341,6 +347,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: lint
     strategy:
+      fail-fast: false
       matrix:
         node-version: [16.x, 18.x]
         kafka-version: ['2_4', '3_8']
