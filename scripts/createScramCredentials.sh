@@ -69,12 +69,40 @@ fi
 if [ "$password_512" = "" ]; then
   password_512=$DEFAULT_PASSWORD_512
 fi
+
+get_kafka_version() {
+  local container_id=$(find_container_id)
+  local version_output=$(docker exec $container_id bash -c "kafka-broker-api-versions --version 2>&1 | grep -oP '(\d+)\.(\d+)\.(\d+)' | head -1" || echo "2.5.0")
+  echo $version_output
+}
+
+should_use_bootstrap_server() {
+  local version=$1
+  local major=$(echo $version | cut -d. -f1)
+  local minor=$(echo $version | cut -d. -f2)
+  
+  # Kafka 2.5+ should use --bootstrap-server
+  if [ $major -gt 2 ] || ([ $major -eq 2 ] && [ $minor -ge 5 ]); then
+    echo "true"
+  else
+    echo "false"
+  fi
+}
  
 echo 'Registering a user with the following credentials '
 echo "username: '${kafka_username}'"
 echo "password_256: '${password_256}'"
 echo "password_512: '${password_512}'"
 
+KAFKA_VERSION=$(get_kafka_version)
+USE_BOOTSTRAP=$(should_use_bootstrap_server $KAFKA_VERSION)
+
+if [ "$USE_BOOTSTRAP" = "true" ]; then
+  CONNECTION_PARAM="--bootstrap-server kafka1:9092"
+else
+  CONNECTION_PARAM="--zookeeper zookeeper:2181"
+fi
+
 docker exec \
  $(find_container_id) \
- bash -c "kafka-configs --zookeeper zookeeper:2181 --alter --add-config 'SCRAM-SHA-256=[iterations=8192,password=${password_256}],SCRAM-SHA-512=[password=${password_512}]' --entity-type users --entity-name ${kafka_username}"
+ bash -c "kafka-configs ${CONNECTION_PARAM} --alter --add-config 'SCRAM-SHA-256=[iterations=8192,password=${password_256}],SCRAM-SHA-512=[password=${password_512}]' --entity-type users --entity-name ${kafka_username}"
