@@ -10,7 +10,7 @@ To run this Kafka configuration, [`docker`](https://docs.docker.com/) with [`doc
 Save the following file as `docker-compose.yml` in the root of your project.
 
 ```yml
-version: '2'
+
 services:
   zookeeper:
     image: wurstmeister/zookeeper:latest
