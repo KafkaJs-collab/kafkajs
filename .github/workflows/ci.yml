@@ -26,7 +26,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [16.x, 18.x]
+        node-version: [18.x, 20.x]
     steps:
       - uses: actions/checkout@v4
       
@@ -57,7 +57,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [16.x, 18.x]
+        node-version: [18.x, 20.x]
     steps:
       - uses: actions/checkout@v4
       
@@ -89,7 +89,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [16.x, 18.x]
+        node-version: [18.x, 20.x]
         kafka-version: ['3_8']
     env:
       COMPOSE_FILE: docker-compose.${{ matrix.kafka-version }}.yml
@@ -142,7 +142,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [16.x, 18.x]
+        node-version: [18.x, 20.x]
         kafka-version: ['3_8']
     env:
       COMPOSE_FILE: docker-compose.${{ matrix.kafka-version }}.yml
@@ -195,7 +195,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [16.x, 18.x]
+        node-version: [18.x, 20.x]
         kafka-version: ['3_8']
     env:
       COMPOSE_FILE: docker-compose.${{ matrix.kafka-version }}.yml
@@ -248,7 +248,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [16.x, 18.x]
+        node-version: [18.x, 20.x]
         kafka-version: ['3_8']
     env:
       COMPOSE_FILE: docker-compose.${{ matrix.kafka-version }}.yml
@@ -302,7 +302,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [16.x, 18.x]
+        node-version: [18.x, 20.x]
         kafka-version: ['3_8']
     env:
       COMPOSE_FILE: docker-compose.${{ matrix.kafka-version }}.yml
@@ -355,7 +355,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [16.x, 18.x]
+        node-version: [18.x, 20.x]
         kafka-version: ['3_8']
     env:
       COMPOSE_FILE: docker-compose.${{ matrix.kafka-version }}_oauthbearer.yml
