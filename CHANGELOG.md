@@ -37,7 +37,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Fixed gzip test for Node.js 18+
 - Fixed broker and consumer tests for Kafka 3.8 compatibility
 - Fixed UUID import breaking changes for v11
-- Fixed Jest script variable expansion for Yarn 4 compatibility
+- Fixed Jest and test:group scripts for Yarn 4 compatibility (wrapped with sh -c)
+- Simplified test:group scripts to use directory paths instead of regex patterns
 - Removed husky configuration (not actively used)
 - Updated lint-staged configuration
 
