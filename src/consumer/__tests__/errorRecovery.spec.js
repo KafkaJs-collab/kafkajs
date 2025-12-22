@@ -246,10 +246,6 @@ describe('Consumer', () => {
     const eachMessage = jest.fn()
     await consumer2.run({ eachMessage })
 
-    const key = secureRandom()
-    const message = { key: `key-${key}`, value: `value-${key}` }
-    await producer.send({ acks: 1, topic: topicName, messages: [message] })
-
     await waitFor(() => crashListener.mock.calls.length > 0)
     expect(crashListener).toHaveBeenCalledWith({
       id: expect.any(Number),
@@ -257,6 +253,13 @@ describe('Consumer', () => {
       type: 'consumer.crash',
       payload: { error, groupId, restart: true },
     })
+
+    // Wait for consumer to fully recover and rejoin after crash
+    await waitForConsumerToJoinGroup(consumer2)
+
+    const key = secureRandom()
+    const message = { key: `key-${key}`, value: `value-${key}` }
+    await producer.send({ acks: 1, topic: topicName, messages: [message] })
 
     await expect(waitFor(() => eachMessage.mock.calls.length)).resolves.toBe(1)
   })
