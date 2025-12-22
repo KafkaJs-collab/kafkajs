@@ -103,7 +103,7 @@ describe('Consumer', () => {
     await consumer.subscribe({ topic: topicName, fromBeginning: true })
 
     const messagesConsumed = []
-    consumer.run({ eachMessage: async event => messagesConsumed.push(event) })
+    consumer.run({ eachMessage: async (event) => messagesConsumed.push(event) })
     await waitForConsumerToJoinGroup(consumer)
 
     await expect(waitForMessages(messagesConsumed)).resolves.toEqual([
@@ -269,7 +269,7 @@ describe('Consumer', () => {
     let receivedErrorMessage
     const restartOnFailure = jest
       .fn()
-      .mockImplementationOnce(async e => {
+      .mockImplementationOnce(async (e) => {
         receivedErrorMessage = e.message
         return true
       })

@@ -10,31 +10,31 @@ const MAX_SAFE_UNSIGNED_INT = 4294967295
 const MIN_SAFE_UNSIGNED_INT = 0
 
 describe('Protocol > Encoder', () => {
-  const signed32 = number => new Encoder().writeVarInt(number).buffer
-  const decode32 = buffer => new Decoder(buffer).readVarInt()
+  const signed32 = (number) => new Encoder().writeVarInt(number).buffer
+  const decode32 = (buffer) => new Decoder(buffer).readVarInt()
 
-  const unsigned32 = number => new Encoder().writeUVarInt(number).buffer
-  const decode32u = buffer => new Decoder(buffer).readUVarInt()
+  const unsigned32 = (number) => new Encoder().writeUVarInt(number).buffer
+  const decode32u = (buffer) => new Decoder(buffer).readUVarInt()
 
-  const signed64 = number => new Encoder().writeVarLong(number).buffer
-  const decode64 = buffer => new Decoder(buffer).readVarLong()
+  const signed64 = (number) => new Encoder().writeVarLong(number).buffer
+  const decode64 = (buffer) => new Decoder(buffer).readVarLong()
 
-  const encodeDouble = number => new Encoder().writeDouble(number).buffer
-  const decodeDouble = buffer => new Decoder(buffer).readDouble()
+  const encodeDouble = (number) => new Encoder().writeDouble(number).buffer
+  const decodeDouble = (buffer) => new Decoder(buffer).readDouble()
 
-  const ustring = string => new Encoder().writeUVarIntString(string).buffer
-  const decodeUString = buffer => new Decoder(buffer).readUVarIntString()
+  const ustring = (string) => new Encoder().writeUVarIntString(string).buffer
+  const decodeUString = (buffer) => new Decoder(buffer).readUVarIntString()
 
-  const ubytes = bytes => new Encoder().writeUVarIntBytes(bytes).buffer
-  const decodeUBytes = buffer => new Decoder(buffer).readUVarIntBytes()
+  const ubytes = (bytes) => new Encoder().writeUVarIntBytes(bytes).buffer
+  const decodeUBytes = (buffer) => new Decoder(buffer).readUVarIntBytes()
 
-  const uarray = array => new Encoder().writeUVarIntArray(array).buffer
+  const uarray = (array) => new Encoder().writeUVarIntArray(array).buffer
 
   const B = (...args) => Buffer.from(args)
-  const L = value => Long.fromString(`${value}`)
+  const L = (value) => Long.fromString(`${value}`)
 
   describe('Unsigned VarInt Array', () => {
-    const encodeUVarInt = number => new Encoder().writeUVarInt(number)
+    const encodeUVarInt = (number) => new Encoder().writeUVarInt(number)
     const array = [7681, 823, 9123, 9812, 3219]
     test('encode uvarint array', () => {
       expect(uarray(array.map(encodeUVarInt))).toEqual(
@@ -43,7 +43,7 @@ describe('Protocol > Encoder', () => {
     })
 
     test('decode uvarint array', () => {
-      const decodeUVarInt = decoder => decoder.readUVarInt()
+      const decodeUVarInt = (decoder) => decoder.readUVarInt()
       const encodedArray = uarray(array.map(encodeUVarInt))
       const decoder = new Decoder(encodedArray)
       expect(decoder.readUVarIntArray(decodeUVarInt)).toEqual(array)
@@ -111,6 +111,7 @@ describe('Protocol > Encoder', () => {
 
   describe('double', () => {
     test('encode double', () => {
+      /* eslint-disable no-loss-of-precision */
       expect(encodeDouble(-3.1415926535897932)).toEqual(
         B(0xc0, 0x09, 0x21, 0xfb, 0x54, 0x44, 0x2d, 0x18)
       )
@@ -128,8 +129,10 @@ describe('Protocol > Encoder', () => {
       expect(encodeDouble(3.1415926535897932)).toEqual(
         B(0x40, 0x09, 0x21, 0xfb, 0x54, 0x44, 0x2d, 0x18)
       )
+      /* eslint-enable no-loss-of-precision */
     })
     test('decode double', () => {
+      /* eslint-disable no-loss-of-precision */
       expect(decodeDouble(encodeDouble(-3.1415926535897932))).toEqual(-3.1415926535897932)
       expect(decodeDouble(encodeDouble(-0.3333333333333333))).toEqual(-0.3333333333333333)
       expect(decodeDouble(encodeDouble(-59.82946381))).toEqual(-59.82946381)
@@ -139,6 +142,7 @@ describe('Protocol > Encoder', () => {
       expect(decodeDouble(encodeDouble(59.82946381))).toEqual(59.82946381)
       expect(decodeDouble(encodeDouble(0.3333333333333333))).toEqual(0.3333333333333333)
       expect(decodeDouble(encodeDouble(3.1415926535897932))).toEqual(3.1415926535897932)
+      /* eslint-enable no-loss-of-precision */
     })
   })
 

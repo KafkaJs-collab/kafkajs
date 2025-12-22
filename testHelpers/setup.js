@@ -3,7 +3,8 @@ jest.setTimeout(90000)
 const retries = process.env.TEST_RETRIES != null ? parseInt(process.env.TEST_RETRIES, 10) : 0
 jest.retryTimes(retries)
 
-require('jest-extended')
+const matchers = require('jest-extended')
+expect.extend(matchers)
 
 expect.extend({
   optional(v, value) {
@@ -41,5 +42,5 @@ const path = require('path')
 // when running tests
 glob
   .sync('src/protocol/requests/**/v*/@(request|response).js')
-  .map(file => path.resolve(file))
+  .map((file) => path.resolve(file))
   .map(require)

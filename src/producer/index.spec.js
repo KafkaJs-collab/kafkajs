@@ -19,7 +19,7 @@ jest.mock('../retry', () => {
   return spy
 })
 
-const uuid = require('uuid/v4')
+const { v4: uuid } = require('uuid')
 const InstrumentationEventEmitter = require('../instrumentation/emitter')
 const createProducer = require('./index')
 const createConsumer = require('../consumer')
@@ -252,7 +252,7 @@ describe('Producer', () => {
           messages: [{ key: 'key-0', value: 'value-0' }],
         })
       )
-      .catch(e => e)
+      .catch((e) => e)
 
     expect(requestListener).toHaveBeenCalledWith({
       id: expect.any(Number),
@@ -425,8 +425,8 @@ describe('Producer', () => {
       producer = createProducer({ cluster, logger: newLogger(), idempotent })
       await producer.connect()
 
-      const sendBatch = async topics => {
-        const topicMessages = topics.map(topic => ({
+      const sendBatch = async (topics) => {
+        const topicMessages = topics.map((topic) => ({
           acks,
           topic,
           messages: new Array(10).fill().map((_, i) => ({
@@ -515,7 +515,7 @@ describe('Producer', () => {
       await consumer.connect()
       await consumer.subscribe({ topic: topicName, fromBeginning: true })
       await consumer.run({
-        eachMessage: async event => {
+        eachMessage: async (event) => {
           messagesConsumed.push(event)
         },
       })
@@ -763,7 +763,7 @@ describe('Producer', () => {
           idempotent: true,
           retry: { retries: 0 },
         })
-      ).toThrowError(
+      ).toThrow(
         new KafkaJSNonRetriableError(
           'Idempotent producer must allow retries to protect against transient errors'
         )

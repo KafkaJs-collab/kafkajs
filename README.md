@@ -52,6 +52,28 @@ KafkaJS is a modern [Apache Kafka](https://kafka.apache.org/) client for Node.js
 * Support for AWS IAM authentication
 * Admin client
 
+## Development
+
+### Requirements
+
+- **Node.js** >= 18.0.0
+- **Yarn** >= 4.0.0 (Berry)
+
+### Setup
+
+```sh
+# Install dependencies
+yarn install
+
+# Run tests locally (requires Docker)
+yarn test:local
+
+# Run full test suite
+yarn test
+```
+
+For more information, see [Developing KafkaJS](https://kafka.js.org/docs/contribution-guide).
+
 ### <a name="getting-started"></a> Getting Started
 
 ```sh

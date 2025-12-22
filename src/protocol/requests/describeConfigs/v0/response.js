@@ -57,14 +57,14 @@ const decodeConfigEntries = (decoder, resourceType) => {
 }
 
 // Convert empty strings to null for backwards compatibility
-const normalizeErrorMessage = errorMessage => (errorMessage === '' ? null : errorMessage)
+const normalizeErrorMessage = (errorMessage) => (errorMessage === '' ? null : errorMessage)
 
-const decodeResources = decoder => {
+const decodeResources = (decoder) => {
   const errorCode = decoder.readInt16()
   const errorMessage = normalizeErrorMessage(decoder.readString())
   const resourceType = decoder.readInt8()
   const resourceName = decoder.readString()
-  const configEntries = decoder.readArray(decoder => decodeConfigEntries(decoder, resourceType))
+  const configEntries = decoder.readArray((decoder) => decodeConfigEntries(decoder, resourceType))
 
   return {
     errorCode,
@@ -75,7 +75,7 @@ const decodeResources = decoder => {
   }
 }
 
-const decode = async rawData => {
+const decode = async (rawData) => {
   const decoder = new Decoder(rawData)
   const throttleTime = decoder.readInt32()
   const resources = decoder.readArray(decodeResources)
@@ -86,7 +86,7 @@ const decode = async rawData => {
   }
 }
 
-const parse = async data => {
+const parse = async (data) => {
   const resourcesWithError = data.resources.filter(({ errorCode }) => failure(errorCode))
   if (resourcesWithError.length > 0) {
     throw createErrorFromCode(resourcesWithError[0].errorCode)

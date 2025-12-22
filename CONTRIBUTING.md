@@ -4,6 +4,21 @@ Thank you for considering contributing to KafkaJS!
 
 Reading and following these guidelines will help us make the contribution process easy and effective for everyone involved. It also communicates that you agree to respect the time of the developers managing and developing these open source projects.
 
+## Requirements
+
+Before contributing, ensure you have:
+
+- **Node.js** >= 18.0.0
+- **Yarn** >= 4.0.0 (Berry)
+- **Docker** and **Docker Compose**
+
+If you need to install or update Yarn:
+
+```bash
+corepack enable
+corepack prepare yarn@stable --activate
+```
+
 ## Getting Started
 
 Contributions are made to this repo via Issues and Pull Requests (PRs). A few general guidelines that cover both:

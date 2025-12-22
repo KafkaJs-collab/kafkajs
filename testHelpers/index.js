@@ -3,7 +3,7 @@
 // `callback` is parameterized instead of a static function
 const fs = require('fs')
 const execa = require('execa')
-const uuid = require('uuid/v4')
+const { v4: uuid } = require('uuid')
 const semver = require('semver')
 const crypto = require('crypto')
 const jwt = require('jsonwebtoken')
@@ -179,11 +179,13 @@ const createConnectionBuilder = (opts = {}, brokers = plainTextBrokers()) => {
 const createCluster = (opts = {}, brokers = plainTextBrokers()) =>
   new Cluster(Object.assign(connectionOpts(), opts, { brokers }))
 
-const createModPartitioner = () => ({ partitionMetadata, message }) => {
-  const numPartitions = partitionMetadata.length
-  const key = parseInt(message.key.replace(/[^\d]/g, ''), 10)
-  return ((key || 0) % 3) % numPartitions
-}
+const createModPartitioner =
+  () =>
+  ({ partitionMetadata, message }) => {
+    const numPartitions = partitionMetadata.length
+    const key = parseInt(message.key.replace(/[^\d]/g, ''), 10)
+    return ((key || 0) % 3) % numPartitions
+  }
 
 const testWaitFor = async (fn, opts = {}) => waitFor(fn, { ignoreTimeout: true, ...opts })
 
@@ -217,11 +219,11 @@ const waitForNextEvent = (consumer, eventName, { maxWait = 10000 } = {}) =>
       () => reject(new Error(`Timeout waiting for '${eventName}'`)),
       maxWait
     )
-    consumer.on(eventName, event => {
+    consumer.on(eventName, (event) => {
       clearTimeout(timeoutId)
       resolve(event)
     })
-    consumer.on(consumer.events.CRASH, event => {
+    consumer.on(consumer.events.CRASH, (event) => {
       clearTimeout(timeoutId)
       reject(event.payload.error)
     })
@@ -234,11 +236,11 @@ const waitForConsumerToJoinGroup = (consumer, { maxWait = 10000, label = '' } = 
         reject(new Error(`Timeout ${label}`.trim()))
       })
     }, maxWait)
-    consumer.on(consumer.events.GROUP_JOIN, event => {
+    consumer.on(consumer.events.GROUP_JOIN, (event) => {
       clearTimeout(timeoutId)
       resolve(event)
     })
-    consumer.on(consumer.events.CRASH, event => {
+    consumer.on(consumer.events.CRASH, (event) => {
       clearTimeout(timeoutId)
       consumer.disconnect().then(() => {
         reject(event.payload.error)
@@ -291,8 +293,8 @@ const testIfKafkaVersion = (version, versionComparator) => {
   return scopedTest
 }
 
-const testIfKafkaVersionLTE = version => testIfKafkaVersion(version, semver.lte)
-const testIfKafkaVersionGTE = version => testIfKafkaVersion(version, semver.gte)
+const testIfKafkaVersionLTE = (version) => testIfKafkaVersion(version, semver.lte)
+const testIfKafkaVersionGTE = (version) => testIfKafkaVersion(version, semver.gte)
 
 const testIfKafkaAtMost_0_10 = testIfKafkaVersionLTE('0.10')
 const testIfKafkaAtLeast_0_11 = testIfKafkaVersionGTE('0.11')
@@ -302,17 +304,21 @@ const flakyTest = (description, callback, testFn = test) =>
   testFn(`[flaky] ${description}`, callback)
 flakyTest.skip = (description, callback) => flakyTest(description, callback, test.skip)
 flakyTest.only = (description, callback) => flakyTest(description, callback, test.only)
-const describeIfEnv = (key, value) => (description, callback, describeFn = describe) => {
-  return value === process.env[key]
-    ? describeFn(description, callback)
-    : describe.skip(description, callback)
-}
+const describeIfEnv =
+  (key, value) =>
+  (description, callback, describeFn = describe) => {
+    return value === process.env[key]
+      ? describeFn(description, callback)
+      : describe.skip(description, callback)
+  }
 
-const describeIfNotEnv = (key, value) => (description, callback, describeFn = describe) => {
-  return value !== process.env[key]
-    ? describeFn(description, callback)
-    : describe.skip(description, callback)
-}
+const describeIfNotEnv =
+  (key, value) =>
+  (description, callback, describeFn = describe) => {
+    return value !== process.env[key]
+      ? describeFn(description, callback)
+      : describe.skip(description, callback)
+  }
 
 /**
  * Conditional describes for SASL OAUTHBEARER.
@@ -326,7 +332,7 @@ const unsupportedVersionResponse = () => Buffer.from({ type: 'Buffer', data: [0,
 const unsupportedVersionResponseWithTimeout = () =>
   Buffer.from({ type: 'Buffer', data: [0, 0, 0, 0, 0, 35] })
 
-const generateMessages = options => {
+const generateMessages = (options) => {
   const { prefix, number = 100 } = options || {}
   const prefixOrEmpty = prefix ? `-${prefix}` : ''
 

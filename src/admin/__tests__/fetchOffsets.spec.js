@@ -23,7 +23,7 @@ describe('Admin', () => {
     groupId = `consumer-group-id-${secureRandom()}`
 
     await Promise.all(
-      [topicName, anotherTopicName, yetAnotherTopicName].map(topic =>
+      [topicName, anotherTopicName, yetAnotherTopicName].map((topic) =>
         createTopic({ topic, numPartitions: 1 })
       )
     )
@@ -140,7 +140,7 @@ describe('Admin', () => {
     describe('when used with the resolvedOffsets option', () => {
       let producer, consumer
 
-      beforeEach(async done => {
+      beforeEach(async () => {
         producer = createProducer({
           cluster,
           createPartitioner: createModPartitioner,
@@ -160,16 +160,18 @@ describe('Admin', () => {
         consumer.run({ eachMessage: () => {} })
         await waitForConsumerToJoinGroup(consumer)
 
-        consumer.on(consumer.events.END_BATCH_PROCESS, async () => {
-          // stop the consumer after the first batch, so only 5 are committed
-          await consumer.stop()
-          // send batch #2
-          await producer.send({
-            acks: 1,
-            topic: topicName,
-            messages: generateMessages({ number: 5 }),
+        const batchProcessPromise = new Promise((resolve) => {
+          consumer.on(consumer.events.END_BATCH_PROCESS, async () => {
+            // stop the consumer after the first batch, so only 5 are committed
+            await consumer.stop()
+            // send batch #2
+            await producer.send({
+              acks: 1,
+              topic: topicName,
+              messages: generateMessages({ number: 5 }),
+            })
+            resolve()
           })
-          done()
         })
 
         // send batch #1
@@ -178,6 +180,8 @@ describe('Admin', () => {
           topic: topicName,
           messages: generateMessages({ number: 5 }),
         })
+
+        await batchProcessPromise
       })
 
       afterEach(async () => {

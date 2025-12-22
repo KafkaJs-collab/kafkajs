@@ -28,11 +28,11 @@ const githubApi = async ({ payload }) =>
           Authorization: `token ${TOKEN}`,
         },
       },
-      res => {
+      (res) => {
         let rawData = ''
 
         res.setEncoding('utf8')
-        res.on('data', chunk => (rawData += chunk))
+        res.on('data', (chunk) => (rawData += chunk))
         res.on('end', () => {
           try {
             if (res.statusCode !== 200) {
@@ -55,10 +55,7 @@ const githubApi = async ({ payload }) =>
 const commentOnPR = async () => {
   const commitMessage =
     BUILD_SOURCEVERSIONMESSAGE ||
-    execa
-      .commandSync('git log -1 --pretty=%B', { shell: true })
-      .stdout.toString('utf-8')
-      .trim()
+    execa.commandSync('git log -1 --pretty=%B', { shell: true }).stdout.toString('utf-8').trim()
 
   const PR_NUMBER_REGEXP = /^Merge pull request #([^\s]+)/
   const result = commitMessage.match(PR_NUMBER_REGEXP)
@@ -118,6 +115,4 @@ const commentOnPR = async () => {
   }
 }
 
-commentOnPR()
-  .then(console.log)
-  .catch(console.error)
+commentOnPR().then(console.log).catch(console.error)

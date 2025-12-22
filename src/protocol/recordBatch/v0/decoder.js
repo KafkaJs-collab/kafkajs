@@ -26,7 +26,7 @@ const CONTROL_FLAG_MASK = 0x20
  *  Records => [Record]
  */
 
-module.exports = async fetchDecoder => {
+module.exports = async (fetchDecoder) => {
   const firstOffset = fetchDecoder.readInt64().toString()
   const length = fetchDecoder.readInt32()
   const decoder = fetchDecoder.slice(length)
@@ -45,7 +45,7 @@ module.exports = async fetchDecoder => {
   // The magic byte was read by the Fetch protocol to distinguish between
   // the record batch and the legacy message set. It's not used here but
   // it has to be read.
-  const magicByte = decoder.readInt8() // eslint-disable-line no-unused-vars
+  const magicByte = decoder.readInt8()
 
   // The library is currently not performing CRC validations
   const crc = decoder.readInt32() // eslint-disable-line no-unused-vars
@@ -91,7 +91,7 @@ module.exports = async fetchDecoder => {
 
 const decodeRecords = async (codec, recordsDecoder, recordContext) => {
   if (!codec) {
-    return recordsDecoder.readArray(decoder => decodeRecord(decoder, recordContext))
+    return recordsDecoder.readArray((decoder) => decodeRecord(decoder, recordContext))
   }
 
   const length = recordsDecoder.readInt32()

@@ -16,7 +16,7 @@ for (const env of Object.keys(process.env)) {
 
 console.log(`SKIP_BETA_ELIGIBILITY: "${SKIP_BETA_ELIGIBILITY}"`)
 
-const eligible = filePath =>
+const eligible = (filePath) =>
   ['index.js', 'package.json'].includes(filePath) || /^(src|types)\//.test(filePath)
 
 if (SKIP_BETA_ELIGIBILITY) {
@@ -25,13 +25,13 @@ if (SKIP_BETA_ELIGIBILITY) {
 }
 
 console.log('Changes:')
-const hasEligibleFiles = changedFiles.some(filePath => {
+const hasEligibleFiles = changedFiles.some((filePath) => {
   const isEligigle = eligible(filePath)
   console.log(`"${filePath}" - eligigle: ${isEligigle}`)
   return isEligigle
 })
 
-const isBumpVersionCommit = changedFiles.every(filePath =>
+const isBumpVersionCommit = changedFiles.every((filePath) =>
   ['package.json', 'CHANGELOG.md'].includes(filePath)
 )
 

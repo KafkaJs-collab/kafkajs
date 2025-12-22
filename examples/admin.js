@@ -38,25 +38,25 @@ const run = async () => {
   })
 }
 
-run().catch(e => kafka.logger().error(`[example/admin] ${e.message}`, { stack: e.stack }))
+run().catch((e) => kafka.logger().error(`[example/admin] ${e.message}`, { stack: e.stack }))
 
 const errorTypes = ['unhandledRejection', 'uncaughtException']
 const signalTraps = ['SIGTERM', 'SIGINT', 'SIGUSR2']
 
-errorTypes.map(type => {
-  process.on(type, async e => {
+errorTypes.map((type) => {
+  process.on(type, async (e) => {
     try {
       kafka.logger().info(`process.on ${type}`)
       kafka.logger().error(e.message, { stack: e.stack })
       await admin.disconnect()
       process.exit(0)
-    } catch (_) {
+    } catch (_error) {
       process.exit(1)
     }
   })
 })
 
-signalTraps.map(type => {
+signalTraps.map((type) => {
   process.once(type, async () => {
     console.log('')
     kafka.logger().info('[example/admin] disconnecting')

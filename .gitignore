@@ -11,3 +11,12 @@ build/
 .idea/
 temp/
 jsconfig.json
+
+# Yarn 4
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+.pnp.*

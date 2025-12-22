@@ -34,7 +34,7 @@ module.exports = class BrokerPool {
     this.logger = logger.namespace('BrokerPool')
     this.retrier = createRetry(assign({}, retry))
 
-    this.createBroker = options =>
+    this.createBroker = (options) =>
       new Broker({
         allowAutoTopicCreation,
         authenticationTimeout,
@@ -57,7 +57,7 @@ module.exports = class BrokerPool {
   hasConnectedBrokers() {
     const brokers = values(this.brokers)
     return (
-      !!brokers.find(broker => broker.isConnected()) ||
+      !!brokers.find((broker) => broker.isConnected()) ||
       (this.seedBroker ? this.seedBroker.isConnected() : false)
     )
   }
@@ -116,7 +116,7 @@ module.exports = class BrokerPool {
    */
   async disconnect() {
     this.seedBroker && (await this.seedBroker.disconnect())
-    await Promise.all(values(this.brokers).map(broker => broker.disconnect()))
+    await Promise.all(values(this.brokers).map((broker) => broker.disconnect()))
 
     this.brokers = {}
     this.metadata = null
@@ -131,7 +131,7 @@ module.exports = class BrokerPool {
    */
   removeBroker({ host, port }) {
     const removedBroker = values(this.brokers).find(
-      broker => broker.connectionPool.host === host && broker.connectionPool.port === port
+      (broker) => broker.connectionPool.host === host && broker.connectionPool.port === port
     )
 
     if (removedBroker) {
@@ -153,7 +153,7 @@ module.exports = class BrokerPool {
     const broker = await this.findConnectedBroker()
     const { host: seedHost, port: seedPort } = this.seedBroker.connectionPool
 
-    return this.retrier(async (bail, retryCount, retryTime) => {
+    return this.retrier(async (bail, _retryCount, _retryTime) => {
       try {
         this.metadata = await broker.metadata(topics)
         this.metadataExpireAt = Date.now() + this.metadataMaxAge
@@ -196,14 +196,14 @@ module.exports = class BrokerPool {
         const currentBrokerIds = keys(this.brokers).sort()
         const unusedBrokerIds = arrayDiff(currentBrokerIds, freshBrokerIds)
 
-        const brokerDisconnects = unusedBrokerIds.map(nodeId => {
+        const brokerDisconnects = unusedBrokerIds.map((nodeId) => {
           const broker = this.brokers[nodeId]
           return broker.disconnect().then(() => {
             delete this.brokers[nodeId]
           })
         })
 
-        const replacedBrokersDisconnects = replacedBrokers.map(broker => broker.disconnect())
+        const replacedBrokersDisconnects = replacedBrokers.map((broker) => broker.disconnect())
         await Promise.all([...brokerDisconnects, ...replacedBrokersDisconnects])
       } catch (e) {
         if (e.type === 'LEADER_NOT_AVAILABLE') {
@@ -227,8 +227,8 @@ module.exports = class BrokerPool {
       this.metadata == null ||
       this.metadataExpireAt == null ||
       Date.now() > this.metadataExpireAt ||
-      !topics.every(topic =>
-        this.metadata.topicMetadata.some(topicMetadata => topicMetadata.topic === topic)
+      !topics.every((topic) =>
+        this.metadata.topicMetadata.some((topicMetadata) => topicMetadata.topic === topic)
       )
 
     if (shouldRefresh) {
@@ -274,7 +274,9 @@ module.exports = class BrokerPool {
       const broker = await this.findBroker({ nodeId })
       try {
         return await callback({ nodeId, broker })
-      } catch (e) {}
+      } catch (_error) {
+        // Ignore errors and try next broker
+      }
     }
 
     return null
@@ -286,7 +288,7 @@ module.exports = class BrokerPool {
    */
   async findConnectedBroker() {
     const nodeIds = shuffle(keys(this.brokers))
-    const connectedBrokerId = nodeIds.find(nodeId => this.brokers[nodeId].isConnected())
+    const connectedBrokerId = nodeIds.find((nodeId) => this.brokers[nodeId].isConnected())
 
     if (connectedBrokerId) {
       return await this.findBroker({ nodeId: connectedBrokerId })
@@ -296,7 +298,9 @@ module.exports = class BrokerPool {
     for (const nodeId of nodeIds) {
       try {
         return await this.findBroker({ nodeId })
-      } catch (e) {}
+      } catch (_error) {
+        // Ignore errors and try next broker
+      }
     }
 
     // Failed to connect to all known brokers, metadata might be old

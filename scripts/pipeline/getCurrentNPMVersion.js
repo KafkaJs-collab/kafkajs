@@ -11,11 +11,11 @@ const getCurrentVersion = async () =>
           'User-Agent': 'KafkaJS Azure Pipeline',
         },
       },
-      res => {
+      (res) => {
         let rawData = ''
 
         res.setEncoding('utf8')
-        res.on('data', chunk => (rawData += chunk))
+        res.on('data', (chunk) => (rawData += chunk))
         res.on('end', () => {
           try {
             if (res.statusCode !== 200) {

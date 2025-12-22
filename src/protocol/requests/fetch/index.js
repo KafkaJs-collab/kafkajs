@@ -4,47 +4,65 @@ const ISOLATION_LEVEL = require('../../isolationLevel')
 const REPLICA_ID = -1
 const NETWORK_DELAY = 100
 
+// Load all request/response modules at the top
+const v0Request = require('./v0/request')
+const v0Response = require('./v0/response')
+const v1Request = require('./v1/request')
+const v1Response = require('./v1/response')
+const v2Request = require('./v2/request')
+const v2Response = require('./v2/response')
+const v3Request = require('./v3/request')
+const v3Response = require('./v3/response')
+const v4Request = require('./v4/request')
+const v4Response = require('./v4/response')
+const v5Request = require('./v5/request')
+const v5Response = require('./v5/response')
+const v6Request = require('./v6/request')
+const v6Response = require('./v6/response')
+const v7Request = require('./v7/request')
+const v7Response = require('./v7/response')
+const v8Request = require('./v8/request')
+const v8Response = require('./v8/response')
+const v9Request = require('./v9/request')
+const v9Response = require('./v9/response')
+const v10Request = require('./v10/request')
+const v10Response = require('./v10/response')
+const v11Request = require('./v11/request')
+const v11Response = require('./v11/response')
+
 /**
  * The FETCH request can block up to maxWaitTime, which can be bigger than the configured
  * request timeout. It's safer to always use the maxWaitTime
  **/
-const requestTimeout = timeout =>
+const requestTimeout = (timeout) =>
   Number.isSafeInteger(timeout + NETWORK_DELAY) ? timeout + NETWORK_DELAY : timeout
 
 const versions = {
   0: ({ replicaId = REPLICA_ID, maxWaitTime, minBytes, topics }) => {
-    const request = require('./v0/request')
-    const response = require('./v0/response')
     return {
-      request: request({ replicaId, maxWaitTime, minBytes, topics }),
-      response,
+      request: v0Request({ replicaId, maxWaitTime, minBytes, topics }),
+      response: v0Response,
       requestTimeout: requestTimeout(maxWaitTime),
     }
   },
   1: ({ replicaId = REPLICA_ID, maxWaitTime, minBytes, topics }) => {
-    const request = require('./v1/request')
-    const response = require('./v1/response')
     return {
-      request: request({ replicaId, maxWaitTime, minBytes, topics }),
-      response,
+      request: v1Request({ replicaId, maxWaitTime, minBytes, topics }),
+      response: v1Response,
       requestTimeout: requestTimeout(maxWaitTime),
     }
   },
   2: ({ replicaId = REPLICA_ID, maxWaitTime, minBytes, topics }) => {
-    const request = require('./v2/request')
-    const response = require('./v2/response')
     return {
-      request: request({ replicaId, maxWaitTime, minBytes, topics }),
-      response,
+      request: v2Request({ replicaId, maxWaitTime, minBytes, topics }),
+      response: v2Response,
       requestTimeout: requestTimeout(maxWaitTime),
     }
   },
   3: ({ replicaId = REPLICA_ID, maxWaitTime, minBytes, maxBytes, topics }) => {
-    const request = require('./v3/request')
-    const response = require('./v3/response')
     return {
-      request: request({ replicaId, maxWaitTime, minBytes, maxBytes, topics }),
-      response,
+      request: v3Request({ replicaId, maxWaitTime, minBytes, maxBytes, topics }),
+      response: v3Response,
       requestTimeout: requestTimeout(maxWaitTime),
     }
   },
@@ -56,11 +74,9 @@ const versions = {
     maxBytes,
     topics,
   }) => {
-    const request = require('./v4/request')
-    const response = require('./v4/response')
     return {
-      request: request({ replicaId, isolationLevel, maxWaitTime, minBytes, maxBytes, topics }),
-      response,
+      request: v4Request({ replicaId, isolationLevel, maxWaitTime, minBytes, maxBytes, topics }),
+      response: v4Response,
       requestTimeout: requestTimeout(maxWaitTime),
     }
   },
@@ -72,11 +88,9 @@ const versions = {
     maxBytes,
     topics,
   }) => {
-    const request = require('./v5/request')
-    const response = require('./v5/response')
     return {
-      request: request({ replicaId, isolationLevel, maxWaitTime, minBytes, maxBytes, topics }),
-      response,
+      request: v5Request({ replicaId, isolationLevel, maxWaitTime, minBytes, maxBytes, topics }),
+      response: v5Response,
       requestTimeout: requestTimeout(maxWaitTime),
     }
   },
@@ -88,11 +102,9 @@ const versions = {
     maxBytes,
     topics,
   }) => {
-    const request = require('./v6/request')
-    const response = require('./v6/response')
     return {
-      request: request({ replicaId, isolationLevel, maxWaitTime, minBytes, maxBytes, topics }),
-      response,
+      request: v6Request({ replicaId, isolationLevel, maxWaitTime, minBytes, maxBytes, topics }),
+      response: v6Response,
       requestTimeout: requestTimeout(maxWaitTime),
     }
   },
@@ -107,10 +119,8 @@ const versions = {
     maxBytes,
     topics,
   }) => {
-    const request = require('./v7/request')
-    const response = require('./v7/response')
     return {
-      request: request({
+      request: v7Request({
         replicaId,
         isolationLevel,
         sessionId,
@@ -121,7 +131,7 @@ const versions = {
         maxBytes,
         topics,
       }),
-      response,
+      response: v7Response,
       requestTimeout: requestTimeout(maxWaitTime),
     }
   },
@@ -136,10 +146,8 @@ const versions = {
     maxBytes,
     topics,
   }) => {
-    const request = require('./v8/request')
-    const response = require('./v8/response')
     return {
-      request: request({
+      request: v8Request({
         replicaId,
         isolationLevel,
         sessionId,
@@ -150,7 +158,7 @@ const versions = {
         maxBytes,
         topics,
       }),
-      response,
+      response: v8Response,
       requestTimeout: requestTimeout(maxWaitTime),
     }
   },
@@ -165,10 +173,8 @@ const versions = {
     maxBytes,
     topics,
   }) => {
-    const request = require('./v9/request')
-    const response = require('./v9/response')
     return {
-      request: request({
+      request: v9Request({
         replicaId,
         isolationLevel,
         sessionId,
@@ -179,7 +185,7 @@ const versions = {
         maxBytes,
         topics,
       }),
-      response,
+      response: v9Response,
       requestTimeout: requestTimeout(maxWaitTime),
     }
   },
@@ -194,10 +200,8 @@ const versions = {
     maxBytes,
     topics,
   }) => {
-    const request = require('./v10/request')
-    const response = require('./v10/response')
     return {
-      request: request({
+      request: v10Request({
         replicaId,
         isolationLevel,
         sessionId,
@@ -208,7 +212,7 @@ const versions = {
         maxBytes,
         topics,
       }),
-      response,
+      response: v10Response,
       requestTimeout: requestTimeout(maxWaitTime),
     }
   },
@@ -224,10 +228,8 @@ const versions = {
     topics,
     rackId,
   }) => {
-    const request = require('./v11/request')
-    const response = require('./v11/response')
     return {
-      request: request({
+      request: v11Request({
         replicaId,
         isolationLevel,
         sessionId,
@@ -239,7 +241,7 @@ const versions = {
         topics,
         rackId,
       }),
-      response,
+      response: v11Response,
       requestTimeout: requestTimeout(maxWaitTime),
     }
   },

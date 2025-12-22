@@ -3,7 +3,12 @@
 testCommand="$1"
 extraArgs="$2"
 
-export COMPOSE_FILE=${COMPOSE_FILE:="docker-compose.2_4.yml"}
+# Use OAUTHBEARER docker-compose if enabled
+if [ ! -z ${OAUTHBEARER_ENABLED} ]; then
+  export COMPOSE_FILE=${COMPOSE_FILE:="docker-compose.3_8_oauthbearer.yml"}
+else
+  export COMPOSE_FILE=${COMPOSE_FILE:="docker-compose.3_8.yml"}
+fi
 export KAFKAJS_DEBUG_PROTOCOL_BUFFERS=${KAFKAJS_DEBUG_PROTOCOL_BUFFERS:=1}
 
 find_container_id() {

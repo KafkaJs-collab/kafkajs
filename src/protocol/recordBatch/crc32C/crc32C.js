@@ -5,7 +5,7 @@
  * also known as CRC32 Castagnoli
  * based on: https://github.com/ashi009/node-fast-crc32c/blob/master/impls/js_crc32c.js
  */
-const crc32C = buffer => {
+const crc32C = (buffer) => {
   let crc = 0 ^ -1
   for (let i = 0; i < buffer.length; i++) {
     crc = T[(crc ^ buffer[i]) & 0xff] ^ (crc >>> 8)
