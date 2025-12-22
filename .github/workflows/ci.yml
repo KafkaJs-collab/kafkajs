@@ -11,8 +11,7 @@ on:
     branches:
       - master
 env:
-  KAFKA_VERSION: '2.4'
-  oauth: docker-compose.2_4.yml
+  KAFKA_VERSION: '3.8'
 
 permissions:
   contents: read
