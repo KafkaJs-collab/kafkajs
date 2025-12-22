@@ -58,6 +58,7 @@ describe('Consumer', () => {
     const { generationId, memberId } = await coordinator.joinGroup({
       groupId,
       sessionTimeout: 6000,
+      rebalanceTimeout: 60000,
       groupProtocols: [
         {
           name: 'AssignerName',
