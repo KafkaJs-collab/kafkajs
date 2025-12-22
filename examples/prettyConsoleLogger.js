@@ -82,7 +82,7 @@ const highlightJsonString = (s) => {
 }
 
 const PrettyConsoleLogger =
-  (_logLevel) =>
+  () =>
   ({ namespace, level, label, log }) => {
     const output = []
     const { message, ...extra } = log

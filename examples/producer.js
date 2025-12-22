@@ -40,7 +40,7 @@ let requestNumber = 0
 const sendMessage = () => {
   const messages = Array(getRandomNumber())
     .fill()
-    .map((_) => createMessage(getRandomNumber()))
+    .map(() => createMessage(getRandomNumber()))
 
   const requestId = requestNumber++
   msgNumber += messages.length
@@ -78,7 +78,7 @@ errorTypes.map((type) => {
       kafka.logger().error(e.message, { stack: e.stack })
       await producer.disconnect()
       process.exit(0)
-    } catch (_) {
+    } catch (_error) {
       process.exit(1)
     }
   })

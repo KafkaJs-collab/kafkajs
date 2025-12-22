@@ -636,7 +636,7 @@ describe('Consumer', () => {
     let calls = 0
 
     consumer.run({
-      eachMessage: async (event) => {
+      eachMessage: async () => {
         calls++
         await sleep(100)
       },

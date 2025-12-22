@@ -111,6 +111,7 @@ describe('Protocol > Encoder', () => {
 
   describe('double', () => {
     test('encode double', () => {
+      /* eslint-disable no-loss-of-precision */
       expect(encodeDouble(-3.1415926535897932)).toEqual(
         B(0xc0, 0x09, 0x21, 0xfb, 0x54, 0x44, 0x2d, 0x18)
       )
@@ -128,8 +129,10 @@ describe('Protocol > Encoder', () => {
       expect(encodeDouble(3.1415926535897932)).toEqual(
         B(0x40, 0x09, 0x21, 0xfb, 0x54, 0x44, 0x2d, 0x18)
       )
+      /* eslint-enable no-loss-of-precision */
     })
     test('decode double', () => {
+      /* eslint-disable no-loss-of-precision */
       expect(decodeDouble(encodeDouble(-3.1415926535897932))).toEqual(-3.1415926535897932)
       expect(decodeDouble(encodeDouble(-0.3333333333333333))).toEqual(-0.3333333333333333)
       expect(decodeDouble(encodeDouble(-59.82946381))).toEqual(-59.82946381)
@@ -139,6 +142,7 @@ describe('Protocol > Encoder', () => {
       expect(decodeDouble(encodeDouble(59.82946381))).toEqual(59.82946381)
       expect(decodeDouble(encodeDouble(0.3333333333333333))).toEqual(0.3333333333333333)
       expect(decodeDouble(encodeDouble(3.1415926535897932))).toEqual(3.1415926535897932)
+      /* eslint-enable no-loss-of-precision */
     })
   })
 

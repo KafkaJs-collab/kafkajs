@@ -87,7 +87,7 @@ describe('Fetcher', () => {
             messages: [],
           })
       )
-      const fetch = jest.fn(async (_) => {
+      const fetch = jest.fn(async () => {
         await sleep(1)
         const batch = batches.pop()
 

@@ -3,7 +3,7 @@
 // `callback` is parameterized instead of a static function
 const fs = require('fs')
 const execa = require('execa')
-const uuid = require('uuid/v4')
+const { v4: uuid } = require('uuid')
 const semver = require('semver')
 const crypto = require('crypto')
 const jwt = require('jsonwebtoken')

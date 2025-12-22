@@ -19,7 +19,7 @@ jest.mock('../retry', () => {
   return spy
 })
 
-const uuid = require('uuid/v4')
+const { v4: uuid } = require('uuid')
 const InstrumentationEventEmitter = require('../instrumentation/emitter')
 const createProducer = require('./index')
 const createConsumer = require('../consumer')

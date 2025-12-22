@@ -50,7 +50,7 @@ errorTypes.map((type) => {
       kafka.logger().error(e.message, { stack: e.stack })
       await admin.disconnect()
       process.exit(0)
-    } catch (_) {
+    } catch (_error) {
       process.exit(1)
     }
   })
