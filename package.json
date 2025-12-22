@@ -16,10 +16,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/tulios/kafkajs.git"
+    "url": "https://github.com/KafkaJs-collab/kafkajs.git"
   },
   "bugs": {
-    "url": "https://github.com/tulios/kafkajs/issues"
+    "url": "https://github.com/KafkaJs-collab/kafkajs/issues"
   },
   "homepage": "https://kafka.js.org",
   "scripts": {
