@@ -24,15 +24,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - **Migrated to Yarn 4 (Berry)** from Yarn Classic
 - Updated all devDependencies to latest stable versions:
   - TypeScript 3.8 → 5.9
-  - Jest 25 → 29
-  - ESLint 6 → 8
+  - Jest 25 → 30
+  - ESLint 6 → 9 with flat config
   - Prettier 1 → 3
+  - UUID 3 → 11
   - And many more development tools
 - Migrated from `eslint-plugin-node` to `eslint-plugin-n`
-- Removed unused dependencies
+- Migrated ESLint configuration from .eslintrc to eslint.config.js (flat config)
+- Fixed all ESLint errors throughout codebase
+- Removed unused dependencies (husky, @typescript-eslint/typescript-estree)
 - Fixed compatibility issues with Node.js 18+
 - Fixed gzip test for Node.js 18+
 - Fixed broker and consumer tests for Kafka 3.8 compatibility
+- Fixed UUID import breaking changes for v11
+- Fixed Jest script variable expansion for Yarn 4 compatibility
 - Removed husky configuration (not actively used)
 - Updated lint-staged configuration
 
