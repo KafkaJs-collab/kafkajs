@@ -36,7 +36,7 @@ const createTopic = (containerId, topicName) => {
 
   try {
     return execa.commandSync(cmd, { shell: true }).stdout.toString('utf-8')
-  } catch (error) {
+  } catch (_error) {
     // Ignore errors, topic might already exist
     return ''
   }
@@ -46,7 +46,7 @@ const consumerGroupDescribe = (containerId) => {
   const cmd = `docker exec ${containerId} bash -c "JMX_PORT=9998 kafka-consumer-groups --bootstrap-server kafka1:29092 --group test-group-${secureRandom()} --describe" && sleep 1`
   try {
     return execa.commandSync(cmd, { shell: true }).stdout.toString('utf-8')
-  } catch (error) {
+  } catch (_error) {
     // Ignore errors
     return ''
   }
