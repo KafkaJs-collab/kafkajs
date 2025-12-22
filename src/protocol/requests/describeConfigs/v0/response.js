@@ -56,9 +56,12 @@ const decodeConfigEntries = (decoder, resourceType) => {
   }
 }
 
+// Convert empty strings to null for backwards compatibility
+const normalizeErrorMessage = errorMessage => (errorMessage === '' ? null : errorMessage)
+
 const decodeResources = decoder => {
   const errorCode = decoder.readInt16()
-  const errorMessage = decoder.readString()
+  const errorMessage = normalizeErrorMessage(decoder.readString())
   const resourceType = decoder.readInt8()
   const resourceName = decoder.readString()
   const configEntries = decoder.readArray(decoder => decodeConfigEntries(decoder, resourceType))

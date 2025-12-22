@@ -121,7 +121,7 @@ describe('Broker > describeConfigs', () => {
         },
         {
           configName: 'message.format.version',
-          configValue: expect.stringMatching(/^(0\.11\.0-IV2|1\.1-IV0|2\.[234]-IV1)$/),
+          configValue: expect.stringMatching(/^(0\.11\.0-IV2|1\.1-IV0|2\.[234]-IV1|3\.0-IV1)$/),
           isDefault: true,
           configSource: ConfigSource.DEFAULT_CONFIG,
           isSensitive: false,
@@ -166,7 +166,7 @@ describe('Broker > describeConfigs', () => {
         },
         {
           configName: 'max.message.bytes',
-          configValue: '1000012',
+          configValue: expect.stringMatching(/^(1000012|1048588)$/),
           isDefault: true,
           configSource: ConfigSource.DEFAULT_CONFIG,
           isSensitive: false,

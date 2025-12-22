@@ -9,9 +9,12 @@ const { failure, createErrorFromCode } = require('../../../error')
  *     error_message => NULLABLE_STRING
  */
 
+// Convert empty strings to null for backwards compatibility
+const normalizeErrorMessage = errorMessage => (errorMessage === '' ? null : errorMessage)
+
 const decodeCreationResponse = decoder => ({
   errorCode: decoder.readInt16(),
-  errorMessage: decoder.readString(),
+  errorMessage: normalizeErrorMessage(decoder.readString()),
 })
 
 const decode = async rawData => {

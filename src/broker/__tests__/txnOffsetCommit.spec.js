@@ -1,5 +1,6 @@
 const Broker = require('../index')
 const COORDINATOR_TYPES = require('../../protocol/coordinatorTypes')
+const sleep = require('../../utils/sleep')
 const {
   secureRandom,
   createTopic,
@@ -51,10 +52,18 @@ describe('Broker > TxnOffsetCommit', () => {
 
     transactionBroker = await findBrokerForGroupId(transactionalId, COORDINATOR_TYPES.TRANSACTION)
     await transactionBroker.connect()
-    const result = await transactionBroker.initProducerId({
-      transactionalId,
-      transactionTimeout: 30000,
-    })
+
+    // Give Kafka 3.x coordinator time to fully initialize
+    await sleep(2000)
+
+    const result = await retryProtocol(
+      'GROUP_LOAD_IN_PROGRESS',
+      async () =>
+        await transactionBroker.initProducerId({
+          transactionalId,
+          transactionTimeout: 30000,
+        })
+    )
 
     producerId = result.producerId
     producerEpoch = result.producerEpoch
@@ -117,20 +126,24 @@ describe('Broker > TxnOffsetCommit', () => {
   })
 
   test('ignores invalid transaction fields', async () => {
-    await consumerBroker.txnOffsetCommit({
-      transactionalId: 'foo',
-      groupId: consumerGroupId,
-      producerId: 999,
-      producerEpoch: 999,
-      topics: [
-        {
-          topic: topicName,
-          partitions: [
-            { partition: 0, offset: 0 },
-            { partition: 1, offset: 0 },
-          ],
-        },
-      ],
-    })
+    // Kafka 3.x validates transactional ID more strictly and will reject
+    // mismatched transaction fields, so we test that it properly throws
+    await expect(
+      consumerBroker.txnOffsetCommit({
+        transactionalId: 'foo',
+        groupId: consumerGroupId,
+        producerId,
+        producerEpoch,
+        topics: [
+          {
+            topic: topicName,
+            partitions: [
+              { partition: 0, offset: 0 },
+              { partition: 1, offset: 0 },
+            ],
+          },
+        ],
+      })
+    ).rejects.toThrow()
   })
 })

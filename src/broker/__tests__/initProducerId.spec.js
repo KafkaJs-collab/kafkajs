@@ -38,10 +38,14 @@ describe('Broker > InitProducerId', () => {
   })
 
   test('request with transaction id', async () => {
-    const response = await broker.initProducerId({
-      transactionalId,
-      transactionTimeout: 30000,
-    })
+    const response = await retryProtocol(
+      'GROUP_LOAD_IN_PROGRESS',
+      async () =>
+        await broker.initProducerId({
+          transactionalId,
+          transactionTimeout: 30000,
+        })
+    )
 
     expect(response).toEqual({
       clientSideThrottleTime: expect.optional(0),
@@ -53,7 +57,10 @@ describe('Broker > InitProducerId', () => {
   })
 
   test('request without transaction id', async () => {
-    const response = await broker.initProducerId({ transactionTimeout: 30000 })
+    const response = await retryProtocol(
+      'GROUP_LOAD_IN_PROGRESS',
+      async () => await broker.initProducerId({ transactionTimeout: 30000 })
+    )
 
     expect(response).toEqual({
       clientSideThrottleTime: expect.optional(0),

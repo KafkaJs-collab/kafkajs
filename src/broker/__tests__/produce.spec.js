@@ -1,5 +1,6 @@
 const Broker = require('../index')
 const COORDINATOR_TYPES = require('../../protocol/coordinatorTypes')
+const sleep = require('../../utils/sleep')
 const { Types: Compression } = require('../../protocol/message/compression')
 const { KafkaJSProtocolError } = require('../../errors')
 const {
@@ -290,9 +291,17 @@ describe('Broker > Produce', () => {
       })
 
       await producerBroker.connect()
-      const result = await producerBroker.initProducerId({
-        transactionTimeout: 30000,
-      })
+
+      // Give Kafka 3.x coordinator time to fully initialize
+      await sleep(2000)
+
+      const result = await retryProtocol(
+        'GROUP_LOAD_IN_PROGRESS',
+        async () =>
+          await producerBroker.initProducerId({
+            transactionTimeout: 30000,
+          })
+      )
 
       const producerId = result.producerId
       const producerEpoch = result.producerEpoch
