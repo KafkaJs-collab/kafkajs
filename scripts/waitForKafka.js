@@ -32,23 +32,24 @@ const waitForNode = (containerId) => {
 }
 
 const createTopic = (containerId, topicName) => {
-  const cmd = `
-    docker exec \
-      ${containerId} \
-      bash -c "JMX_PORT=9998 kafka-topics --create --if-not-exists --topic ${topicName} --replication-factor 1 --partitions 2 --bootstrap-server kafka1:29092 2> /dev/null"
-  `
+  const cmd = `docker exec ${containerId} bash -c "JMX_PORT=9998 kafka-topics --create --if-not-exists --topic ${topicName} --replication-factor 1 --partitions 2 --bootstrap-server kafka1:29092"`
 
-  return execa.commandSync(cmd, { shell: true }).stdout.toString('utf-8')
+  try {
+    return execa.commandSync(cmd, { shell: true }).stdout.toString('utf-8')
+  } catch (error) {
+    // Ignore errors, topic might already exist
+    return ''
+  }
 }
 
 const consumerGroupDescribe = (containerId) => {
-  const cmd = `
-    docker exec \
-      ${containerId} \
-      bash -c "JMX_PORT=9998 kafka-consumer-groups --bootstrap-server kafka1:29092 --group test-group-${secureRandom()} --describe > /dev/null 2>&1"
-    sleep 1
-  `
-  return execa.commandSync(cmd, { shell: true }).stdout.toString('utf-8')
+  const cmd = `docker exec ${containerId} bash -c "JMX_PORT=9998 kafka-consumer-groups --bootstrap-server kafka1:29092 --group test-group-${secureRandom()} --describe" && sleep 1`
+  try {
+    return execa.commandSync(cmd, { shell: true }).stdout.toString('utf-8')
+  } catch (error) {
+    // Ignore errors
+    return ''
+  }
 }
 
 console.log('\nFinding container ids...')

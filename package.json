@@ -60,7 +60,7 @@
     "ip": "^2.0.1",
     "jest": "^30.0.0-alpha.6",
     "jest-circus": "^30.0.0-alpha.6",
-    "jest-extended": "^4.0.2",
+    "jest-extended": "^7.0.0",
     "jest-junit": "^16.0.0",
     "jsonwebtoken": "^9.0.2",
     "lint-staged": "^15.2.11",

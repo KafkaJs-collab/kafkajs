@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Updated all devDependencies to latest stable versions:
   - TypeScript 3.8 → 5.9
   - Jest 25 → 30
+  - jest-extended 4 → 7
   - ESLint 6 → 9 with flat config
   - Prettier 1 → 3
   - UUID 3 → 11
@@ -38,6 +39,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Fixed broker and consumer tests for Kafka 3.8 compatibility
 - Fixed UUID import breaking changes for v11
 - Fixed Jest and test:group scripts for Yarn 4 compatibility (wrapped with sh -c)
+- Fixed docker-compose file references (3.8 → 3_8) in test scripts
+- Fixed jest-extended v7 import for Jest 30 compatibility
+- Fixed async/done callback conflicts in Jest 30 tests
+- Updated Jest snapshots for Jest 30 format changes
 - Simplified test:group scripts to use directory paths instead of regex patterns
 - Removed husky configuration (not actively used)
 - Updated lint-staged configuration

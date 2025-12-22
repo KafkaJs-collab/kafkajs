@@ -3,7 +3,7 @@
 testCommand="$1"
 extraArgs="$2"
 
-export COMPOSE_FILE=${COMPOSE_FILE:="docker-compose.3.8.yml"}
+export COMPOSE_FILE=${COMPOSE_FILE:="docker-compose.3_8.yml"}
 export KAFKAJS_DEBUG_PROTOCOL_BUFFERS=${KAFKAJS_DEBUG_PROTOCOL_BUFFERS:=1}
 
 find_container_id() {
