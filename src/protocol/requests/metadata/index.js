@@ -1,38 +1,39 @@
+const v0Request = require('./v0/request')
+const v0Response = require('./v0/response')
+const v1Request = require('./v1/request')
+const v1Response = require('./v1/response')
+const v2Request = require('./v2/request')
+const v2Response = require('./v2/response')
+const v3Request = require('./v3/request')
+const v3Response = require('./v3/response')
+const v4Request = require('./v4/request')
+const v4Response = require('./v4/response')
+const v5Request = require('./v5/request')
+const v5Response = require('./v5/response')
+const v6Request = require('./v6/request')
+const v6Response = require('./v6/response')
+
 const versions = {
   0: ({ topics }) => {
-    const request = require('./v0/request')
-    const response = require('./v0/response')
-    return { request: request({ topics }), response }
+    return { request: v0Request({ topics }), response: v0Response }
   },
   1: ({ topics }) => {
-    const request = require('./v1/request')
-    const response = require('./v1/response')
-    return { request: request({ topics }), response }
+    return { request: v1Request({ topics }), response: v1Response }
   },
   2: ({ topics }) => {
-    const request = require('./v2/request')
-    const response = require('./v2/response')
-    return { request: request({ topics }), response }
+    return { request: v2Request({ topics }), response: v2Response }
   },
   3: ({ topics }) => {
-    const request = require('./v3/request')
-    const response = require('./v3/response')
-    return { request: request({ topics }), response }
+    return { request: v3Request({ topics }), response: v3Response }
   },
   4: ({ topics, allowAutoTopicCreation }) => {
-    const request = require('./v4/request')
-    const response = require('./v4/response')
-    return { request: request({ topics, allowAutoTopicCreation }), response }
+    return { request: v4Request({ topics, allowAutoTopicCreation }), response: v4Response }
   },
   5: ({ topics, allowAutoTopicCreation }) => {
-    const request = require('./v5/request')
-    const response = require('./v5/response')
-    return { request: request({ topics, allowAutoTopicCreation }), response }
+    return { request: v5Request({ topics, allowAutoTopicCreation }), response: v5Response }
   },
   6: ({ topics, allowAutoTopicCreation }) => {
-    const request = require('./v6/request')
-    const response = require('./v6/response')
-    return { request: request({ topics, allowAutoTopicCreation }), response }
+    return { request: v6Request({ topics, allowAutoTopicCreation }), response: v6Response }
   },
 }
 
