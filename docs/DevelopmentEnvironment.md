@@ -3,9 +3,36 @@ id: development-environment
 title: Development Environment
 ---
 
-When developing KafkaJS, we run a Kafka cluster in a similar way to what is described in [Running Kafka in Development](DockerLocal.md), using [`docker`](https://docs.docker.com/) and [`docker-compose`](https://docs.docker.com/compose/install/). Before you proceed, make sure that you have both `docker` and `docker-compose` available.
+## Prerequisites
 
-KafkaJS is assuming that [`yarn`](https://yarnpkg.com/) is available globally, so if you haven't installed it yet: `npm install --global yarn`.
+Before you start developing KafkaJS, make sure you have the following installed:
+
+- **Node.js**: >= 18.0.0 (required since v2.2.4)
+- **Yarn**: >= 4.0.0 (Berry)
+- **Docker** and **Docker Compose** for running Kafka clusters
+
+### Installing Yarn 4
+
+If you have Yarn Classic (1.x) or need to install Yarn, use Corepack (included with Node.js 16.10+):
+
+```bash
+corepack enable
+corepack prepare yarn@stable --activate
+```
+
+Alternatively, you can install Yarn globally:
+
+```bash
+npm install --global yarn
+```
+
+### Installing Dependencies
+
+Once you have cloned the repository, install the dependencies:
+
+```bash
+yarn install
+```
 
 ## Running Kafka
 
@@ -20,10 +47,18 @@ For testing KafkaJS we use a multi-broker Kafka cluster as well as Zookeeper for
 This boots the Kafka cluster using the default docker-compose.yml file described in [scripts/dockerComposeUp.sh](https://github.com/tulios/kafkajs/blob/master/scripts/dockerComposeUp.sh). If you want to run a different version of Kafka, specify a different compose file using the `COMPOSE_FILE` environment variable:
 
 ```sh
-COMPOSE_FILE="docker-compose.2_3.yml" ./scripts/dockerComposeUp.sh
+COMPOSE_FILE="docker-compose.2_4.yml" ./scripts/dockerComposeUp.sh
 ```
 
-If you run `docker-compose -f docker-compose.2_3.yml ps` (specify whichever compose file you used in the step above), you should see something like:
+### Kafka Version Notes
+
+As of version 2.2.4, KafkaJS uses Kafka 3.8 as the default version for development and testing. Some important changes:
+
+- **Bootstrap Server Port**: The default development bootstrap server port is now **29092** (instead of 9092) for better compatibility with Docker networking
+- **Docker Compose**: The `version` declaration has been removed from Docker Compose files (deprecated in Docker Compose v2)
+- **Kafka Configurations**: Updated listener configurations and authorizer class for Kafka 3.8 compatibility
+
+If you run `docker-compose ps` (or specify whichever compose file you used in the step above), you should see something like:
 
 ```sh
 $ docker-compose -f docker-compose.2_3.yml ps

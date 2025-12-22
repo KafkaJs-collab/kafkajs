@@ -5,6 +5,44 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Breaking Changes
+- **Node.js**: Minimum version bumped to 18.0.0
+- **Kafka**: Updated default testing version to 3.8
+- **Development**: Bootstrap server port for development changed to 29092 for better Docker compatibility
+
+### Infrastructure Changes
+- Updated CI configuration to test against Node.js 18, 20, 22
+- Updated CI to test against Kafka 3.8
+- Removed deprecated Docker Compose version declarations (deprecated in Docker Compose v2)
+- Updated Kafka listener configurations and authorizer class for Kafka 3.8 compatibility
+- Enhanced Kafka scripts to support automatic version detection
+- Simplified Kafka scripts for bootstrap server management
+
+### Development
+- **Migrated to Yarn 4 (Berry)** from Yarn Classic
+- Updated all devDependencies to latest stable versions:
+  - TypeScript 3.8 → 5.9
+  - Jest 25 → 29
+  - ESLint 6 → 8
+  - Prettier 1 → 3
+  - And many more development tools
+- Migrated from `eslint-plugin-node` to `eslint-plugin-n`
+- Removed unused dependencies
+- Fixed compatibility issues with Node.js 18+
+- Fixed gzip test for Node.js 18+
+- Fixed broker and consumer tests for Kafka 3.8 compatibility
+- Removed husky configuration (not actively used)
+- Updated lint-staged configuration
+
+### Documentation
+- Updated development environment setup instructions with Node.js 18+ requirements
+- Added Yarn 4 (Berry) installation and migration guide
+- Updated contribution guidelines with new system requirements
+- Added section about Kafka 3.8 changes and bootstrap server port updates
+- Documented Docker Compose file changes
+
 ## [2.2.4] - 2023-02-27
 
 ### Added
