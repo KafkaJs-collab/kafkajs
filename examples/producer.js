@@ -27,7 +27,7 @@ const topic = 'topic-test'
 const producer = kafka.producer()
 
 const getRandomNumber = () => Math.round(Math.random() * 1000)
-const createMessage = num => ({
+const createMessage = (num) => ({
   key: `key-${num}`,
   value: `value-${num}-${new Date().toISOString()}`,
   headers: {
@@ -40,7 +40,7 @@ let requestNumber = 0
 const sendMessage = () => {
   const messages = Array(getRandomNumber())
     .fill()
-    .map(_ => createMessage(getRandomNumber()))
+    .map((_) => createMessage(getRandomNumber()))
 
   const requestId = requestNumber++
   msgNumber += messages.length
@@ -51,13 +51,13 @@ const sendMessage = () => {
       compression: CompressionTypes.GZIP,
       messages,
     })
-    .then(response => {
+    .then((response) => {
       kafka.logger().info(`Messages sent #${requestId}`, {
         response,
         msgNumber,
       })
     })
-    .catch(e => kafka.logger().error(`[example/producer] ${e.message}`, { stack: e.stack }))
+    .catch((e) => kafka.logger().error(`[example/producer] ${e.message}`, { stack: e.stack }))
 }
 
 let intervalId
@@ -66,13 +66,13 @@ const run = async () => {
   intervalId = setInterval(sendMessage, 3000)
 }
 
-run().catch(e => kafka.logger().error(`[example/producer] ${e.message}`, { stack: e.stack }))
+run().catch((e) => kafka.logger().error(`[example/producer] ${e.message}`, { stack: e.stack }))
 
 const errorTypes = ['unhandledRejection', 'uncaughtException']
 const signalTraps = ['SIGTERM', 'SIGINT', 'SIGUSR2']
 
-errorTypes.map(type => {
-  process.on(type, async e => {
+errorTypes.map((type) => {
+  process.on(type, async (e) => {
     try {
       kafka.logger().info(`process.on ${type}`)
       kafka.logger().error(e.message, { stack: e.stack })
@@ -84,7 +84,7 @@ errorTypes.map(type => {
   })
 })
 
-signalTraps.map(type => {
+signalTraps.map((type) => {
   process.once(type, async () => {
     console.log('')
     kafka.logger().info('[example/producer] disconnecting')

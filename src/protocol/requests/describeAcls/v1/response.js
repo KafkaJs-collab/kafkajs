@@ -21,14 +21,14 @@ const Decoder = require('../../../decoder')
  *       operation => INT8
  *       permission_type => INT8
  */
-const decodeAcls = decoder => ({
+const decodeAcls = (decoder) => ({
   principal: decoder.readString(),
   host: decoder.readString(),
   operation: decoder.readInt8(),
   permissionType: decoder.readInt8(),
 })
 
-const decodeResources = decoder => ({
+const decodeResources = (decoder) => ({
   resourceType: decoder.readInt8(),
   resourceName: decoder.readString(),
   resourcePatternType: decoder.readInt8(),
@@ -36,9 +36,9 @@ const decodeResources = decoder => ({
 })
 
 // Convert empty strings to null for backwards compatibility
-const normalizeErrorMessage = errorMessage => (errorMessage === '' ? null : errorMessage)
+const normalizeErrorMessage = (errorMessage) => (errorMessage === '' ? null : errorMessage)
 
-const decode = async rawData => {
+const decode = async (rawData) => {
   const decoder = new Decoder(rawData)
   const throttleTime = decoder.readInt32()
   const errorCode = decoder.readInt16()

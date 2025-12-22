@@ -22,13 +22,13 @@ const { DEFAULT_CONFIG } = require('../../../configSource')
  *         config_source => INT8
  */
 
-const decodeSynonyms = decoder => ({
+const decodeSynonyms = (decoder) => ({
   configName: decoder.readString(),
   configValue: decoder.readString(),
   configSource: decoder.readInt8(),
 })
 
-const decodeConfigEntries = decoder => {
+const decodeConfigEntries = (decoder) => {
   const configName = decoder.readString()
   const configValue = decoder.readString()
   const readOnly = decoder.readBoolean()
@@ -48,9 +48,9 @@ const decodeConfigEntries = decoder => {
 }
 
 // Convert empty strings to null for backwards compatibility
-const normalizeErrorMessage = errorMessage => (errorMessage === '' ? null : errorMessage)
+const normalizeErrorMessage = (errorMessage) => (errorMessage === '' ? null : errorMessage)
 
-const decodeResources = decoder => ({
+const decodeResources = (decoder) => ({
   errorCode: decoder.readInt16(),
   errorMessage: normalizeErrorMessage(decoder.readString()),
   resourceType: decoder.readInt8(),
@@ -58,7 +58,7 @@ const decodeResources = decoder => ({
   configEntries: decoder.readArray(decodeConfigEntries),
 })
 
-const decode = async rawData => {
+const decode = async (rawData) => {
   const decoder = new Decoder(rawData)
   const throttleTime = decoder.readInt32()
   const resources = decoder.readArray(decodeResources)

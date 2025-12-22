@@ -23,7 +23,7 @@ describe('Admin', () => {
     groupId = `consumer-group-id-${secureRandom()}`
 
     await Promise.all(
-      [topicName, anotherTopicName, yetAnotherTopicName].map(topic =>
+      [topicName, anotherTopicName, yetAnotherTopicName].map((topic) =>
         createTopic({ topic, numPartitions: 1 })
       )
     )
@@ -140,7 +140,7 @@ describe('Admin', () => {
     describe('when used with the resolvedOffsets option', () => {
       let producer, consumer
 
-      beforeEach(async done => {
+      beforeEach(async (done) => {
         producer = createProducer({
           cluster,
           createPartitioner: createModPartitioner,

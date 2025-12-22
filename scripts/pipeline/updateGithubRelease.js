@@ -65,11 +65,11 @@ const getTag = async () =>
           Authorization: `token ${TOKEN}`,
         },
       },
-      res => {
+      (res) => {
         let rawData = ''
 
         res.setEncoding('utf8')
-        res.on('data', chunk => (rawData += chunk))
+        res.on('data', (chunk) => (rawData += chunk))
         res.on('end', () => {
           try {
             if (res.statusCode !== 200) {
@@ -91,7 +91,7 @@ const getTag = async () =>
     request.end()
   })
 
-const createRelease = async tag =>
+const createRelease = async (tag) =>
   new Promise((resolve, reject) => {
     const request = https.request(
       {
@@ -106,11 +106,11 @@ const createRelease = async tag =>
           Authorization: `token ${TOKEN}`,
         },
       },
-      res => {
+      (res) => {
         let rawData = ''
 
         res.setEncoding('utf8')
-        res.on('data', chunk => (rawData += chunk))
+        res.on('data', (chunk) => (rawData += chunk))
         res.on('end', () => {
           try {
             if (res.statusCode !== 201) {
@@ -142,6 +142,6 @@ const createRelease = async tag =>
   })
 
 getTag()
-  .then(tag => createRelease(tag))
-  .then(release => console.log(`Release ${TAG} created`, release))
+  .then((tag) => createRelease(tag))
+  .then((release) => console.log(`Release ${TAG} created`, release))
   .catch(console.error)

@@ -3,7 +3,7 @@ const CONFIG_RESOURCE_TYPES = require('../../protocol/configResourceTypes')
 const ConfigSource = require('../../protocol/configSource')
 const Broker = require('../index')
 
-const sortByConfigName = array => array.sort((a, b) => a.configName.localeCompare(b.configName))
+const sortByConfigName = (array) => array.sort((a, b) => a.configName.localeCompare(b.configName))
 
 describe('Broker > describeConfigs', () => {
   let seedBroker, broker
@@ -16,7 +16,7 @@ describe('Broker > describeConfigs', () => {
     await seedBroker.connect()
 
     const metadata = await seedBroker.metadata()
-    const newBrokerData = metadata.brokers.find(b => b.nodeId === metadata.controllerId)
+    const newBrokerData = metadata.brokers.find((b) => b.nodeId === metadata.controllerId)
 
     broker = new Broker({
       connectionPool: createConnectionPool(newBrokerData),

@@ -5,7 +5,7 @@ const crypto = require('crypto')
 
 const secureRandom = (length = 10) => crypto.randomBytes(length).toString('hex')
 
-const findContainerId = node => {
+const findContainerId = (node) => {
   const cmd = `
     docker ps \
       --filter "status=running" \
@@ -19,7 +19,7 @@ const findContainerId = node => {
   return containerId
 }
 
-const waitForNode = containerId => {
+const waitForNode = (containerId) => {
   const cmd = `
     docker exec \
       ${containerId} \
@@ -41,7 +41,7 @@ const createTopic = (containerId, topicName) => {
   return execa.commandSync(cmd, { shell: true }).stdout.toString('utf-8')
 }
 
-const consumerGroupDescribe = containerId => {
+const consumerGroupDescribe = (containerId) => {
   const cmd = `
     docker exec \
       ${containerId} \
