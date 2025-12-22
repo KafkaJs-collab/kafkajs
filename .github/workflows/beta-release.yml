@@ -13,6 +13,8 @@ jobs:
       skip_pre_release: ${{ steps.beta_check.outputs.SKIP_PRE_RELEASE }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
       
       - name: Setup Node.js
         uses: actions/setup-node@v4
