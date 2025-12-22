@@ -37,8 +37,14 @@ const isBumpVersionCommit = changedFiles.every((filePath) =>
 
 if (hasEligibleFiles && !isBumpVersionCommit) {
   console.log('Build has eligible files, continue to pre-release')
+  console.log('SKIP_PRE_RELEASE=false')
 } else {
   console.log('Skip pre-release, no changes in relevant files')
   console.log(`isBumpVersionCommit: ${isBumpVersionCommit}`)
-  console.log('##vso[task.setvariable variable=SKIP_PRE_RELEASE;isOutput=true]true')
+  console.log('SKIP_PRE_RELEASE=true')
+  // Set output for GitHub Actions
+  if (process.env.GITHUB_OUTPUT) {
+    const fs = require('fs')
+    fs.appendFileSync(process.env.GITHUB_OUTPUT, 'SKIP_PRE_RELEASE=true\n')
+  }
 }

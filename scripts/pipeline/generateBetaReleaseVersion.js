@@ -18,5 +18,14 @@ getCurrentVersion().then(({ latest, beta }) => {
   const newBeta = sameStableVersion(newStable, beta) ? currentBeta + 1 : 0
   const newBetaVersion = `${newStable}-${tag}.${newBeta}`
   console.log(`New beta: ${newBetaVersion}`)
-  console.log(`##vso[task.setvariable variable=PRE_RELEASE_VERSION;isOutput=true]${newBetaVersion}`)
+  console.log(`PRE_RELEASE_VERSION=${newBetaVersion}`)
+  // Set output and env for GitHub Actions
+  if (process.env.GITHUB_OUTPUT) {
+    const fs = require('fs')
+    fs.appendFileSync(process.env.GITHUB_OUTPUT, `PRE_RELEASE_VERSION=${newBetaVersion}\n`)
+  }
+  if (process.env.GITHUB_ENV) {
+    const fs = require('fs')
+    fs.appendFileSync(process.env.GITHUB_ENV, `PRE_RELEASE_VERSION=${newBetaVersion}\n`)
+  }
 })

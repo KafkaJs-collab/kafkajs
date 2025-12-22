@@ -52,6 +52,7 @@ jobs:
         run: yarn install
       
       - name: Generate beta release version
+        id: generate_version
         run: ./scripts/pipeline/generateBetaReleaseVersion.js
       
       - name: Update package.json for beta release
@@ -63,11 +64,13 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       
       - name: Comment on PR
-        run: TOKEN=${GH_TOKEN} ./scripts/pipeline/commentBackOnPR.js
+        run: ./scripts/pipeline/commentBackOnPR.js
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_PR_NUMBER: ${{ github.event.pull_request.number }}
+          GITHUB_EVENT_HEAD_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
       
       - name: Trigger canary app pipeline
         run: ./scripts/pipeline/triggerCanaryAppPipeline.sh
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}

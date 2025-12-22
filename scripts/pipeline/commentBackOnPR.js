@@ -8,7 +8,7 @@ for (const env of Object.keys(process.env)) {
   console.log(`${env}=${process.env[env]}`)
 }
 
-const { TOKEN, GITHUB_PR_NUMBER, BUILD_SOURCEVERSIONMESSAGE } = process.env
+const { TOKEN, GITHUB_PR_NUMBER, GITHUB_EVENT_HEAD_COMMIT_MESSAGE } = process.env
 
 if (!TOKEN) {
   throw new Error('Missing TOKEN env variable')
@@ -23,7 +23,7 @@ const githubApi = async ({ payload }) =>
         path: `/graphql`,
         method: 'POST',
         headers: {
-          'User-Agent': 'KafkaJS Azure Pipeline',
+          'User-Agent': 'KafkaJS GitHub Actions',
           'Content-Type': 'application/json',
           Authorization: `token ${TOKEN}`,
         },
@@ -54,7 +54,7 @@ const githubApi = async ({ payload }) =>
 
 const commentOnPR = async () => {
   const commitMessage =
-    BUILD_SOURCEVERSIONMESSAGE ||
+    GITHUB_EVENT_HEAD_COMMIT_MESSAGE ||
     execa.commandSync('git log -1 --pretty=%B', { shell: true }).stdout.toString('utf-8').trim()
 
   const PR_NUMBER_REGEXP = /^Merge pull request #([^\s]+)/
@@ -98,7 +98,7 @@ const commentOnPR = async () => {
         mutation CommentOnPR($subjectId: ID!) {
           addComment(input: {
             subjectId: $subjectId,
-            clientMutationId: "azure_pipelines_pre_release_hook",
+            clientMutationId: "github_actions_pre_release_hook",
             body: "\`${version}\` released :tada:\nhttps://www.npmjs.com/package/kafkajs/v/${version}"
           }) {
             clientMutationId
