@@ -63,6 +63,7 @@ describe('Broker > Heartbeat', () => {
     const { generationId, memberId } = await groupCoordinator.joinGroup({
       groupId,
       sessionTimeout: 30000,
+      rebalanceTimeout: 60000,
       groupProtocols: [
         {
           name: 'AssignerName',

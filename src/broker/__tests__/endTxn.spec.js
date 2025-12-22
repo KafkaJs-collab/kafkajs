@@ -1,5 +1,6 @@
 const Broker = require('../index')
 const COORDINATOR_TYPES = require('../../protocol/coordinatorTypes')
+const sleep = require('../../utils/sleep')
 const {
   secureRandom,
   createConnectionPool,
@@ -51,10 +52,17 @@ describe('Broker > EndTxn', () => {
 
     await transactionBroker.connect()
 
-    const result = await transactionBroker.initProducerId({
-      transactionalId,
-      transactionTimeout: 30000,
-    })
+    // Give Kafka 3.x coordinator time to fully initialize
+    await sleep(2000)
+
+    const result = await retryProtocol(
+      'GROUP_LOAD_IN_PROGRESS',
+      async () =>
+        await transactionBroker.initProducerId({
+          transactionalId,
+          transactionTimeout: 30000,
+        })
+    )
 
     producerId = result.producerId
     producerEpoch = result.producerEpoch

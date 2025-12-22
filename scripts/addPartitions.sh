@@ -21,4 +21,4 @@ fi
 
 docker exec \
   $(find_container_id) \
-  bash -c "kafka-topics --zookeeper zookeeper:2181 --alter --topic ${TOPIC} --partitions ${PARTITIONS}"
+  bash -c "kafka-topics --bootstrap-server kafka1:29092 --alter --topic ${TOPIC} --partitions ${PARTITIONS}"

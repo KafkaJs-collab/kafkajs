@@ -373,7 +373,7 @@ module.exports = class Broker {
   async joinGroup({
     groupId,
     sessionTimeout,
-    rebalanceTimeout,
+    rebalanceTimeout = 60000,
     memberId = '',
     protocolType = 'consumer',
     groupProtocols,

@@ -76,6 +76,7 @@ describe('Broker > OffsetCommit', () => {
     const { generationId, memberId } = await groupCoordinator.joinGroup({
       groupId,
       sessionTimeout: 30000,
+      rebalanceTimeout: 60000,
       groupProtocols: [
         {
           name: 'AssignerName',
@@ -135,6 +136,7 @@ describe('Broker > OffsetCommit', () => {
     const { generationId, memberId } = await groupCoordinator.joinGroup({
       groupId,
       sessionTimeout: 30000,
+      rebalanceTimeout: 60000,
       groupProtocols: [
         {
           name: 'AssignerName',
